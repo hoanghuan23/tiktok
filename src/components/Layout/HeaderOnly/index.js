@@ -1,5 +1,5 @@
 
-function DefaultLayout({children}) {
+function HeaderOnly({children}) {
     return (
         <div>
             <div className="container">
@@ -9,4 +9,4 @@ function DefaultLayout({children}) {
     );
 }
 
-export default DefaultLayout;
+export default HeaderOnly;
