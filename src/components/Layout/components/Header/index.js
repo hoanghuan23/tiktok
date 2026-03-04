@@ -1,15 +1,22 @@
 import classNames from 'classnames/bind';
-import Tippy from '@tippyjs/react/headless';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircleQuestion,
+  faCloudUpload,
+  faCoins,
   faDeleteLeft,
   faEllipsisVertical,
   faKeyboard,
+  faGear,
   faLanguage,
   faMagnifyingGlass,
   faSpinner,
+  faUser,
+  faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
+
+import Tippy from '@tippyjs/react';
+import HeadlessTippy from '@tippyjs/react/headless';
 import { useEffect, useState } from 'react';
 
 import Button from '~/components/Button';
@@ -18,7 +25,7 @@ import styles from './Header.moudle.scss';
 import images from '~/assets/images';
 import AccountItem from '~/components/AccountItem';
 import Menu from '~/components/Popper/Menu';
-import { type } from '@testing-library/user-event/dist/type';
+import 'tippy.js/dist/tippy.css';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -31,20 +38,20 @@ const MENU_ITEMS = [
         {
           type: 'language',
           code: 'en',
-          title: 'English'
+          title: 'English',
         },
         {
           type: 'language',
           code: 'vi',
-          title: 'Tiếng Việt'
+          title: 'Tiếng Việt',
         },
         {
           type: 'language',
           code: 'jp',
-          title: '日本語'
-        }
-      ]
-    }
+          title: '日本語',
+        },
+      ],
+    },
   },
 
   {
@@ -75,14 +82,45 @@ function Header() {
         break;
       default:
     }
-  }
+  };
+
+  const userMenu = [
+    {
+      icon: <FontAwesomeIcon icon={faUser} />,
+      title: 'View profile',
+      to: '/@huan',
+    },
+    {
+      icon: <FontAwesomeIcon icon={faCoins} />,
+      title: 'Get coins',
+      to: '/feedback',
+    },
+    {
+      icon: <FontAwesomeIcon icon={faGear} />,
+      title: 'Settings',
+      to: '/settings',
+    },
+
+    ...MENU_ITEMS,
+
+    {
+      icon: <FontAwesomeIcon icon={faSignOut} />,
+      title: 'Log out',
+      to: '/logout',
+      separate: true,
+    },
+
+
+  ];
+
+  const currrentUser = true;
 
   return (
     <header className={cx('wrapper')}>
       <div className={cx('inner')}>
         <img src={images.logo.default} alt="Logo" />
 
-        <Tippy
+        <HeadlessTippy
           interactive
           visible={searchResult.length > 0}
           render={(attrs) => (
@@ -108,15 +146,34 @@ function Header() {
               <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
             </button>
           </div>
-        </Tippy>
-        <div className={cx('actions')}>
-          <Button text>Upload</Button>
-          <Button primary>Log in</Button>
+        </HeadlessTippy>
 
-          <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
-            <button className={cx('more-btn')}>
-              <FontAwesomeIcon icon={faEllipsisVertical} />
-            </button>
+        <div className={cx('actions')}>
+          {currrentUser ? (
+            <Tippy delay={[0, 200]} content="Upload video" placement="bottom">
+              <button className={cx('action-btn')}>
+                <FontAwesomeIcon className={cx('action-btn')} icon={faCloudUpload} />
+              </button>
+            </Tippy>
+          ) : (
+            <>
+              <Button text>Upload</Button>
+              <Button primary>Log in</Button>
+            </>
+          )}
+
+          <Menu items={currrentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+            {currrentUser ? (
+              <img
+                className={cx('user-avatar')}
+                src="https://yt3.googleusercontent.com/OXbxyxi7XaDta1HS8rAUWzgLcegQxXf4clltpIUE3qCzuO3LxFhRqqatphRP788cVqYiRWWKPXQ=s900-c-k-c0x00ffffff-no-rj"
+                alt="User Avatar"
+              />
+            ) : (
+              <button className={cx('more-btn')}>
+                <FontAwesomeIcon icon={faEllipsisVertical} />
+              </button>
+            )}
           </Menu>
         </div>
       </div>
