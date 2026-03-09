@@ -2,7 +2,6 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircleQuestion,
-  faCloudUpload,
   faCoins,
   faDeleteLeft,
   faEllipsisVertical,
@@ -26,6 +25,8 @@ import images from '~/assets/images';
 import AccountItem from '~/components/AccountItem';
 import Menu from '~/components/Popper/Menu';
 import 'tippy.js/dist/tippy.css';
+import { UploadIcon } from '~/components/Icons';
+import Image from '~/components/Image';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -152,7 +153,7 @@ function Header() {
           {currrentUser ? (
             <Tippy delay={[0, 200]} content="Upload video" placement="bottom">
               <button className={cx('action-btn')}>
-                <FontAwesomeIcon className={cx('action-btn')} icon={faCloudUpload} />
+                <UploadIcon />
               </button>
             </Tippy>
           ) : (
@@ -164,10 +165,11 @@ function Header() {
 
           <Menu items={currrentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
             {currrentUser ? (
-              <img
+              <Image
                 className={cx('user-avatar')}
                 src="https://yt3.googleusercontent.com/OXbxyxi7XaDta1HS8rAUWzgLcegQxXf4clltpIUE3qCzuO3LxFhRqqatphRP788cVqYiRWWKPXQ=s900-c-k-c0x00ffffff-no-rj"
                 alt="User Avatar"
+                fallBack = "https://i.pinimg.com/originals/83/66/93/836693415ad27ca44de777e408c3808e.png"
               />
             ) : (
               <button className={cx('more-btn')}>
