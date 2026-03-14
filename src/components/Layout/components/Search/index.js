@@ -13,14 +13,34 @@ function Search() {
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [showResult, setShowResult] = useState(true);
+    const [loading, setLoading] = useState(false);
  
     const inputRef = useRef();
 
   useEffect(() => {
-    setTimeout(() => {
-      setSearchResult([1, 2, 3]);
-    }, 3000);
-  }, []);
+    const q = searchValue.trim();
+    if (!q) {
+      setSearchResult([]);
+      return;
+    }
+
+    setLoading(true);
+
+    const timer = setTimeout( async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/api/users/search?q=${encodeURIComponent(q)}`);
+        const data = await res.json();
+        setSearchResult(data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
+        setSearchResult([]);
+        setLoading(false);
+      }
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, [searchValue]);
 
 
   const handleHideResult = () => {
@@ -35,10 +55,13 @@ function Search() {
             <div className={cx('search-result')} tabIndex="-1" {...attrs}>
               <PopperWrapper>
                 <h4 className={cx('search-title')}>Accounts</h4>
-                <AccountItem />
-                <AccountItem />
-                <AccountItem />
-                <AccountItem />
+                {searchResult.map((user) => (
+                  <AccountItem 
+                   key={user.id} 
+                   data={user}
+                   
+                  />
+                ))}
               </PopperWrapper>
             </div>
           )}
@@ -54,12 +77,12 @@ function Search() {
               onFocus={() => setShowResult(true)}
             />
             
-            {!!searchValue &&
+            {!!searchValue && !loading && 
             <button className={cx('clear')} onClick={() => {setSearchValue(''); inputRef.current.focus();}}>
               <FontAwesomeIcon icon={faDeleteLeft}></FontAwesomeIcon>
             </button>
             }
-            {/* <FontAwesomeIcon className={cx('loading')} icon={faSpinner}></FontAwesomeIcon> */}
+            {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner}></FontAwesomeIcon>}
 
             <button className={cx('search-btn')}>
               <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
