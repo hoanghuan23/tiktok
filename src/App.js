@@ -16,12 +16,12 @@ function App() {
             if (route.layout) {
               Layout = route.layout;
             } else if (route.layout === null) {
-              Layout = Fragment
+              Layout = Fragment;
             }
-            
+
             return (
               <Route
-                key={index}
+                key={route.path || index}
                 path={route.path}
                 element={
                   <Layout>

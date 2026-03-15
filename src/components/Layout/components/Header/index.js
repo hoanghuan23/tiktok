@@ -6,8 +6,10 @@ import {
   faKeyboard,
   faLanguage,
   faSignOut,
-  faUser
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
+
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 
@@ -21,6 +23,7 @@ import Menu from '~/components/Popper/Menu';
 import styles from './Header.moudle.scss';
 
 import Search from '../Search';
+import routesConfig from '~/config/routes';
 
 const cx = classNames.bind(styles);
 const MENU_ITEMS = [
@@ -62,7 +65,6 @@ const MENU_ITEMS = [
 ];
 
 function Header() {
-  
   const handleMenuChange = (menuItem) => {
     switch (menuItem.type) {
       case 'language':
@@ -104,7 +106,9 @@ function Header() {
   return (
     <header className={cx('wrapper')}>
       <div className={cx('inner')}>
-        <img src={images.logo.default} alt="Logo" />
+        <Link to= {routesConfig.home} className={cx('logo-link')}>
+          <img src={images.logo.default} alt="Logo" />
+        </Link>
 
         <Search />
 
