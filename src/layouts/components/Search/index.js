@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import proptypes from 'prop-types';
 import { faDeleteLeft, faSpinner, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeadlessTippy from '@tippyjs/react/headless';
@@ -103,5 +104,9 @@ function Search() {
     </div>
   );
 }
+
+AccountItem.propTypes = {
+  data: proptypes.object,
+};
 
 export default Search;
