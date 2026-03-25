@@ -1,4 +1,4 @@
-import Button from '~/components/Button';
+import Button from '~/components/Button/Button';
 import classNames from 'classnames/bind';
 import styles from './Menu.moudle.scss';
 import PropTypes from 'prop-types';
@@ -17,8 +17,8 @@ function MenuItem({ data, onClick }) {
 }
 
 MenuItem.propTypes = {
-    data: PropTypes.object.isRequired,
-    onClick: PropTypes.func,
+  data: PropTypes.object.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default MenuItem;
